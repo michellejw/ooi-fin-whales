@@ -1,0 +1,22 @@
+# Raw waveform data from FDSN. Large, and always re-downloadable.
+# Intermediate products: Whale-VAD frame probabilities, spectrogram caches,
+# and per-note detection tables. Frame probabilities alone run to roughly
+# 18 GB per Nov-Mar season (50 frames/s x 7 classes x float32).
+#
+# Both are reconstructible from manifests/, which IS committed.
+#
+# Note the `dir/*` plus negation form. A bare `data/` would ignore the
+# directory itself, taking the README that explains it along with everything
+# else, and the explanation would never reach anyone cloning the repo.
+data/*
+!data/README.txt
+
+work/*
+!work/README.txt
+
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+__marimo__/
+.DS_Store

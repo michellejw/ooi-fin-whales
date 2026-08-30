@@ -1,0 +1,45 @@
+[project]
+name = "ooi-fin-whales"
+version = "0.1.0"
+description = "Extending a 2003-2013 fin whale call time series into the OOI era with an automated detector"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    # Data access. obspy speaks FDSN and gives us the same client for the
+    # 2011-2013 era and the present day, which is the whole point of the
+    # one-pipeline-both-eras decision.
+    "obspy>=1.4",
+    "numpy>=1.26",
+    "scipy>=1.11",
+
+    # Tabular results. polars over pandas for the lazy scan API, since the
+    # measurement tables get large once whole seasons are processed.
+    "polars>=1.0",
+
+    # Reading the 2017 study's archived per-note detections.
+    "h5py>=3.10",
+
+    # Detection. whalevad pins torch and torchaudio itself; they are listed
+    # explicitly so the lockfile records the versions we actually tested.
+    "torch>=2.0",
+    "torchaudio>=2.0",
+    "whalevad>=0.1.6",
+
+    "marimo>=0.9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ooi_fin_whales"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
