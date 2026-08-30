@@ -155,6 +155,15 @@ Adopted:
 - `Assisted-by` commit trailers rather than `Co-Authored-By` for AI assistance,
   per the guide's [agentic AI
   page](https://learn.scientific-python.org/development/guides/ai/)
+- codespell, because this repository is prose-heavy and the prose is part of
+  the deliverable
+- zizmor, which statically analyses the workflows. It found nine issues in the
+  first version of `ci.yml`: unpinned actions, no explicit permissions block,
+  and credential persistence through checkout. All are fixed, and actions are
+  now pinned to commit SHAs rather than tags, since a tag can be moved to point
+  at different code
+- Dependabot, monthly and grouped into single pull requests, which is also what
+  keeps those SHA pins from going stale
 
 Considered and declined, for now:
 
@@ -164,6 +173,10 @@ Considered and declined, for now:
   four-stage pipeline would be more scaffolding than content.
 - **A task runner (nox, tox).** Their value is matrix testing across
   environments. One developer, one Python version, and uv already handles it.
+
+Also declined: a markdown formatter, which would reflow prose whose line
+breaks are deliberate, and the `pre-commit.ci` configuration checks, since
+pre-commit runs in GitHub Actions here rather than through that service.
 
 `sp-repo-review` therefore does not run clean, deliberately. CI reports its
 output without failing on it, so drift is visible without the noise of

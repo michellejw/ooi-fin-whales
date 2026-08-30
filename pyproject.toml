@@ -58,10 +58,12 @@ testpaths = ["tests"]
 addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
 xfail_strict = true
 filterwarnings = ["error"]
-log_cli_level = "INFO"
+# log_level, not log_cli_level. The first controls what is captured and
+# shown on a failure; the second controls live console output.
+log_level = "INFO"
 
 [tool.ruff]
-src = ["src"]
+# No src setting: Ruff 0.6+ finds src/ on its own.
 
 [tool.ruff.lint]
 extend-select = [
@@ -80,3 +82,9 @@ extend-select = [
   "SIM",
   "UP",   # pyupgrade
 ]
+
+[tool.codespell]
+skip = "uv.lock,.git,.venv,data,work"
+# No ignore-words-list. It runs clean as it stands, and pre-loading exceptions
+# for typos that have not happened is how a spell checker stops finding any.
+# Add entries when a real domain word is flagged, not before.

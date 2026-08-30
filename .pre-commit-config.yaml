@@ -21,3 +21,19 @@ repos:
       - id: ruff-check
         args: ["--fix", "--show-fixes"]
       - id: ruff-format
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        # This repository is unusually prose-heavy for its size, and the prose
+        # is part of the deliverable.
+        args: ["--write-changes"]
+        additional_dependencies: ["tomli"]
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.30.0
+    hooks:
+      - id: zizmor
+        # Static analysis of the GitHub Actions workflows: template injection,
+        # excessive token permissions, credential persistence.
