@@ -7,6 +7,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      # Do not propose a version the day it ships. A compromised release would
+      # otherwise reach a pull request before anyone had looked at it.
+      default-days: 7
     groups:
       # One PR for all of them rather than one each.
       actions:
@@ -18,6 +22,8 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7
     groups:
       python:
         patterns: ["*"]
