@@ -18,6 +18,13 @@ which model produced something can check it with a model from a different
 family, which catches a class of error that re-reading with the same model
 does not.
 
+The first two commits in this repository predate the convention and carry
+`Co-Authored-By` instead, which is the trailer this policy says not to use.
+They were left as they are rather than rewritten. The history is more useful
+showing a convention being found and adopted than it would be showing a repo
+that got it right from the start, and rewriting published history to look
+tidier is a worse habit than the trailer was a mistake.
+
 ## Attribution
 
 AI tools are not listed as authors or co-authors. `Co-Authored-By` records a
