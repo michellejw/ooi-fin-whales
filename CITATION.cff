@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+title: ooi-fin-whales
+message: If you use this software, please cite it using these metadata.
+type: software
+authors:
+  - given-names: Michelle
+    family-names: Weirathmueller
+    email: michellejw@gmail.com
+    affiliation: Waveform Analytics LLC
+    # orcid: ""  # TODO: register at orcid.org and fill in. Checked 2026-08-30:
+    # no public ORCID record exists under this name, and the 2017 PLoS ONE
+    # paper carries none for any author.
+repository-code: "https://github.com/michellejw/ooi-fin-whales"
+abstract: >-
+  Extending a 2003-2013 fin whale call time series into the present using an
+  automated detector, on continuous seafloor seismometer data from the
+  Endeavour segment of the Juan de Fuca Ridge. Measures inter-pulse interval
+  and peak frequency of the 20 Hz call, and compares a modern detector against
+  the matched filter used in the original study on identical audio.
+keywords:
+  - bioacoustics
+  - fin whale
+  - Balaenoptera physalus
+  - passive acoustic monitoring
+  - Juan de Fuca Ridge
+license: MIT
+references:
+  - type: article
+    title: >-
+      Spatial and temporal trends in fin whale vocalizations recorded in the
+      NE Pacific Ocean between 2003-2013
+    authors:
+      - given-names: Michelle
+        family-names: Weirathmueller
+      - given-names: Kathleen
+        family-names: Stafford
+      - given-names: William
+        family-names: Wilcock
+      - given-names: Rose
+        family-names: Hilmo
+      - given-names: Robert
+        family-names: Dziak
+      - given-names: Anne
+        family-names: Tréhu
+    journal: PLoS ONE
+    volume: 12
+    issue: 10
+    year: 2017
+    doi: 10.1371/journal.pone.0186127

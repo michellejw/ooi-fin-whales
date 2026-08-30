@@ -136,6 +136,39 @@ uv run marimo edit notebooks/ --port 2722
 fresh clone reproduces every published number without needing anything that is
 not in the repository or on a public server.
 
+## Project conventions
+
+This project follows the [Scientific Python Development
+Guide](https://learn.scientific-python.org/development/), and checks itself
+against it with `sp-repo-review`, which runs in CI.
+
+Adopted:
+
+- Ruff for linting and formatting, with the guide's recommended rule set
+- The guide's pytest settings, including `filterwarnings = ["error"]`. That one
+  has already earned its place: obspy deprecated the `IRIS` FDSN client name in
+  favour of `EARTHSCOPE`, and a deprecation in the data access path should fail
+  a test rather than scroll past in a log
+- pre-commit, running Ruff and a large-file check
+- GitHub Actions, testing a fresh clone installed from the lockfile on Python
+  3.11 and 3.13
+- `Assisted-by` commit trailers rather than `Co-Authored-By` for AI assistance,
+  per the guide's [agentic AI
+  page](https://learn.scientific-python.org/development/guides/ai/)
+
+Considered and declined, for now:
+
+- **A type checker.** `src/` has no code yet, and obspy ships no type stubs.
+  Worth revisiting once the pipeline exists.
+- **A docs folder.** This README is the documentation. A generated site for a
+  four-stage pipeline would be more scaffolding than content.
+- **A task runner (nox, tox).** Their value is matrix testing across
+  environments. One developer, one Python version, and uv already handles it.
+
+`sp-repo-review` therefore does not run clean, deliberately. CI reports its
+output without failing on it, so drift is visible without the noise of
+suppressing checks we have decided against.
+
 ## Status
 
 Scoping complete. Station, detector, and validation design are settled. The
@@ -155,6 +188,40 @@ the whole measurement and aggregation path, does not depend on it.
 The interface exists for the science rather than for the licensing. Comparing
 detectors on identical audio is the experiment, so they had to be swappable
 regardless.
+
+## Use of AI tools
+
+This section is a disclosure, not a disclaimer. Read it as part of the methods.
+
+Claude Code (Anthropic, Opus 5) was used throughout this project for literature
+search, code, and drafting documentation including this file. Specifically:
+
+- **Literature and data discovery.** The survey of published fin whale
+  detectors, the recovery of the original study's FDSN station codes from its
+  archived MATLAB, and the station availability queries were run with AI
+  assistance. Every claim carried into the project notes is marked either
+  verified, meaning the source was fetched and read, or relayed, meaning it was
+  reported but not independently checked.
+- **Code.** Written with AI assistance and reviewed before commit. Commits
+  carry an `Assisted-by: claude-code:claude-opus-5` trailer, following the
+  [Scientific Python guidance](https://learn.scientific-python.org/development/guides/ai/).
+  AI tools are not listed as co-authors: `Co-Authored-By` records a copyright
+  holder taking responsibility, and a model is not one.
+- **Verification.** Load-bearing numbers were computed directly rather than
+  accepted. The instrument response figures in this README come from evaluating
+  the FDSN response, not from a summary. The detector's output class count was
+  confirmed by loading the model rather than by reading its documentation, which
+  turned out to be wrong.
+
+Scientific decisions were not delegated. The choice of station, the scope of the
+study, and in particular the validation design (running the new detector over
+data whose published answer already exists, so that the difference between old
+and new is attributable to the detector alone) were made by the author.
+
+AI tools are not authors and are not credited as such, per ICMJE and COPE
+guidance. Any publication arising from this work will carry the equivalent
+disclosure in its methods or acknowledgements. The full policy is in
+[AI_POLICY.md](AI_POLICY.md).
 
 ## References
 
