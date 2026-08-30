@@ -23,11 +23,44 @@ REPO = Path(__file__).resolve().parent.parent
 MAX_RESULT_BYTES = 1_000_000
 
 
+def _is_gitignored(path: Path) -> bool:
+    """Ask git itself, rather than parsing .gitignore.
+
+    Reading the file as text would let a rule pass while being wrong: a
+    negation elsewhere, a trailing-slash mismatch, a .git/info/exclude
+    override. `git check-ignore` exits 1 for "not ignored", which is an
+    answer rather than a failure, so check=False is deliberate here.
+
+    --no-index is load-bearing. By default git check-ignore consults the
+    index, and a tracked file is never reported as ignored no matter what
+    the rules say. Without this flag the README test below passes for every
+    committed file regardless of .gitignore, which is exactly the bug it is
+    supposed to catch. It was silently doing that until the guard was
+    re-verified after an unrelated refactor.
+    """
+    result = subprocess.run(
+        ["git", "check-ignore", "--no-index", "-q", str(path)],
+        cwd=REPO,
+        check=False,
+    )
+    return result.returncode == 0
+
+
 def _tracked_files(directory: Path) -> list[Path]:
     """Files git would actually commit, ignoring anything gitignored."""
     out = subprocess.run(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", str(directory)],
-        cwd=REPO, capture_output=True, text=True, check=True,
+        [
+            "git",
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            str(directory),
+        ],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return [REPO / line for line in out.stdout.splitlines() if line]
 
@@ -55,9 +88,7 @@ def test_bulk_directories_are_gitignored(directory):
     probe.parent.mkdir(exist_ok=True)
     probe.touch()
     try:
-        ignored = subprocess.run(
-            ["git", "check-ignore", "-q", str(probe)], cwd=REPO
-        ).returncode == 0
+        ignored = _is_gitignored(probe)
     finally:
         probe.unlink()
     assert ignored, (
@@ -71,18 +102,15 @@ def test_bulk_directories_are_gitignored(directory):
 def test_bulk_directory_readmes_survive_the_ignore(directory):
     """The README inside an ignored directory must still be committable.
 
-    Regression test. `.gitignore` originally read `work/` and `data/`, which
+    Regression test. .gitignore originally read "work/" and "data/", which
     ignore the directory itself and everything under it. That silently took
     the README explaining what belongs there, so the rule was documented in a
-    file nobody cloning the repo would ever receive. The fix is the `dir/*`
-    plus `!dir/README.txt` form, and this test is here so it stays that way.
+    file nobody cloning the repo would ever receive. The fix is the "dir/*"
+    plus "!dir/README.txt" form, and this test is here so it stays that way.
     """
     readme = REPO / directory / "README.txt"
     assert readme.exists(), f"{directory}/README.txt is missing"
-    ignored = subprocess.run(
-        ["git", "check-ignore", "-q", str(readme)], cwd=REPO
-    ).returncode == 0
-    assert not ignored, (
+    assert not _is_gitignored(readme), (
         f"{directory}/README.txt is gitignored, so the rule it documents will "
         f"not reach anyone who clones this repository. .gitignore needs the "
         f"`{directory}/*` plus `!{directory}/README.txt` form, not a bare "

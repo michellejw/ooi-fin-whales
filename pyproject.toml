@@ -49,4 +49,34 @@ build-backend = "hatchling.build"
 packages = ["src/ooi_fin_whales"]
 
 [tool.pytest.ini_options]
+# Settings follow the Scientific Python Development Guide (PP302-PP309).
+# filterwarnings = ["error"] is the one that earns its place fastest: obspy
+# deprecated the "IRIS" FDSN client name in favour of "EARTHSCOPE", and a
+# deprecation in the data access path should fail a test rather than scroll past.
+minversion = "8.0"
 testpaths = ["tests"]
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+log_cli_level = "INFO"
+
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
+extend-select = [
+  "B",    # flake8-bugbear
+  "I",    # isort
+  "ARG",  # unused arguments
+  "C4",   # comprehensions
+  "ICN",  # import conventions
+  "NPY",  # numpy-specific rules
+  "PGH",  # pygrep-hooks
+  "PIE",
+  "PL",   # pylint
+  "PT",   # pytest style
+  "RET",
+  "RUF",
+  "SIM",
+  "UP",   # pyupgrade
+]

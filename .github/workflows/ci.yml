@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint and guideline compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Run pre-commit
+        run: uvx pre-commit run --all-files --show-diff-on-failure
+      - name: Check against the Scientific Python Development Guide
+        # Deliberately not failing the build on this. Some checks (a docs
+        # folder, a task runner, a type checker) are recorded as considered
+        # and declined in README.md, so a clean run is not the goal. It is
+        # here so that drift shows up in the log rather than silently.
+        run: uvx 'sp-repo-review[cli]' . || true
+
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: uv sync --locked
+      - name: Test
+        # A fresh clone, installed from the lockfile, running the suite. This
+        # is what makes the reproducibility claim in README.md tested rather
+        # than asserted.
+        run: uv run pytest

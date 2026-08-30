@@ -1,0 +1,23 @@
+# Scientific Python Development Guide, PY006.
+# Run `uvx pre-commit install` once to enable, `uvx pre-commit run -a` to check.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        # Belt and braces with tests/test_repo_hygiene.py. That test guards
+        # results/ specifically; this catches anything large anywhere.
+        args: ["--maxkb=1000"]
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.5
+    hooks:
+      - id: ruff-check
+        args: ["--fix", "--show-fixes"]
+      - id: ruff-format
