@@ -1677,6 +1677,10 @@ dependencies = [
     { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "torch" },
     { name = "torchaudio" },
+]
+
+[package.optional-dependencies]
+whalevad = [
     { name = "whalevad" },
 ]
 
@@ -1695,8 +1699,9 @@ requires-dist = [
     { name = "scipy", specifier = ">=1.11" },
     { name = "torch", specifier = ">=2.0" },
     { name = "torchaudio", specifier = ">=2.0" },
-    { name = "whalevad", specifier = ">=0.1.6" },
+    { name = "whalevad", marker = "extra == 'whalevad'", specifier = ">=0.1.6" },
 ]
+provides-extras = ["whalevad"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=8.0" }]

@@ -51,8 +51,9 @@ writes its own.
 
 1. **fetch** retrieves waveform data from the FDSN web services and writes a
    manifest recording the exact query.
-2. **detect** finds candidate pulses. Two detectors are run: a signal
-   processing baseline, and a neural detector (Whale-VAD).
+2. **detect** finds candidate pulses. Detectors are interchangeable behind one
+   interface, because comparing them is part of the point. Two are planned: a
+   signal processing baseline after Schall, and a neural detector (Whale-VAD).
 3. **measure** computes IPI and frequency per detected note, using the 2017
    study's definitions.
 4. **aggregate** builds the two-dimensional frequency-IPI histograms the
@@ -139,6 +140,21 @@ not in the repository or on a public server.
 
 Scoping complete. Station, detector, and validation design are settled. The
 pipeline is not built yet.
+
+## License
+
+MIT, for everything in this repository.
+
+Whale-VAD is GPL-3.0. It is an optional dependency rather than a required one,
+installed with `uv sync --extra whalevad`, and reached through the same
+detector interface as the signal processing baseline. Nothing in `src/` is
+derived from it. Using the Whale-VAD backend brings that combination under
+GPL-3.0 terms; the rest of the pipeline, including the baseline detector and
+the whole measurement and aggregation path, does not depend on it.
+
+The interface exists for the science rather than for the licensing. Comparing
+detectors on identical audio is the experiment, so they had to be swappable
+regardless.
 
 ## References
 

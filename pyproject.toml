@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "Extending a 2003-2013 fin whale call time series into the OOI era with an automated detector"
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
 
 dependencies = [
     # Data access. obspy speaks FDSN and gives us the same client for the
@@ -20,14 +22,19 @@ dependencies = [
     # Reading the 2017 study's archived per-note detections.
     "h5py>=3.10",
 
-    # Detection. whalevad pins torch and torchaudio itself; they are listed
-    # explicitly so the lockfile records the versions we actually tested.
+    # Detection. torch and torchaudio are core: the Schall DSP baseline does
+    # not need them, but the detector interface and its tests do.
     "torch>=2.0",
     "torchaudio>=2.0",
-    "whalevad>=0.1.6",
 
     "marimo>=0.9",
 ]
+
+[project.optional-dependencies]
+# Whale-VAD is GPL-3.0. It is kept optional so that installing and using this
+# package does not by itself pull a copyleft dependency into the environment.
+# See the License section of README.md.
+whalevad = ["whalevad>=0.1.6"]
 
 [dependency-groups]
 dev = [
