@@ -6,21 +6,16 @@ that the README does not say.
 
 ## Where the reasoning lives
 
-Detailed notes are in the author's Obsidian vault, not in this repository:
-`~/Documents/obsidian/projects/ooi-fin-whales/`
+`notes/` carries the decision record and the evidence behind it. It is in the
+repository rather than a private notebook, because a rationale nobody can read
+is not a rationale.
 
-- `index.md` decisions table, each row with its rationale
-- `probes/` one file per question answered, with the evidence
-- `literature/2017-paper-data-section.md` what the 2017 paper actually used and
-  reported, extracted from the full text
-- `literature/detector-landscape.md` the detector survey behind choosing Whale-VAD
-- `archive-2026-02/` superseded planning, kept for provenance
-
-Per-project bookmarks are in `~/.claude/memory/resumption.md` under
-`ooi-fin-whales`, and status in `~/.claude-sync/status/ooi-fin-whales.yml`.
-
-Note that `~/dev` syncs nowhere. This GitHub remote is the only route to this
-code from another machine.
+- `notes/index.md` decisions table, each row with its rationale
+- `notes/probes/` one file per question answered, with the evidence
+- `notes/literature/2017-paper-data-section.md` what the 2017 paper actually
+  used and reported, extracted from the full text
+- `notes/literature/detector-landscape.md` the detector survey behind choosing
+  Whale-VAD
 
 ## Things that will waste your time if rediscovered
 
@@ -30,6 +25,12 @@ code from another machine.
 - **"Peak frequency" is an amplitude-weighted centroid** over +/-0.5 s and
   15-35 Hz, defined by an equation in the paper's Methods. It is not an argmax
   peak pick. Pick spectral peaks and the numbers will not be comparable.
+- **The archived frequency distribution is bimodal, and the taller mode is the
+  wrong note.** On KEMF 2011-2012 the modes sit near 19.1 and 22.9 Hz, the
+  higher one carrying roughly twice the counts, so a global argmax returns
+  23.05 Hz against a published ~18.3 Hz. The A note is the lower mode. Select
+  the mode, do not take the maximum. This is a separate error from the centroid
+  one above and survives getting that one right.
 - **Do not correct the instrument response** in the reproduction leg. The 2017
   study did not (`p.resp = 1`, a no-op), so its published centroids are of the
   uncorrected spectrum. Matching it means deliberately not doing the more
