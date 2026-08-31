@@ -1,0 +1,134 @@
+{
+  "kind": "external-archive",
+  "purpose": "Per-note detections from Weirathmueller et al. 2017 (PLoS ONE e0186127). The validation baseline: re-running the new detector on these same station-seasons gives a measured old-vs-new method bias.",
+  "source": {
+    "repository": "https://github.com/michellejw/fin-call-patterns",
+    "branch": "master",
+    "commit": "5ba449c42939aeb3f44068de3cf26a9b1e7b754c",
+    "commit_date": "2016-11-23T06:09:26Z",
+    "license": null,
+    "note": "No licence file and no DOI; master is mutable in principle, though unchanged since 2016. The commit above is the pin that makes this reproducible, and the checksums below detect drift."
+  },
+  "retrieved": "2026-08-30T22:43:19Z",
+  "local_path": "data/fin-call-patterns/ (gitignored)",
+  "schema": {
+    "format": "pandas HDFStore fixed-format frame, pandas_version 0.15.2",
+    "hdf5_group": "df",
+    "columns": [
+      "dettime",
+      "frequency",
+      "snr",
+      "siglevel",
+      "station",
+      "isseq",
+      "boutnum",
+      "seqnum",
+      "ipi"
+    ],
+    "units": {
+      "dettime": "datetime64[ns] UTC, stored as int64 in df/block1_values",
+      "ipi": "timedelta64[ns], stored as int64 in df/block4_values",
+      "frequency": "Hz, amplitude-weighted centroid, df/block2_values col 0",
+      "snr": "dB, df/block2_values col 1",
+      "siglevel": "dB, df/block2_values col 2",
+      "boutnum": "df/block2_values col 3",
+      "seqnum": "df/block2_values col 4",
+      "isseq": "uint8 flag, df/block0_values",
+      "station": "pickled object array in df/block3_values; take it from the filename instead"
+    }
+  },
+  "detection_data": {
+    "AX_2006_2007.h5": {
+      "bytes": 14941806,
+      "sha256": "9f554ccd77daa584f03ffda597df4747d168c634be962d908963063e4dc85236"
+    },
+    "AX_2007_2008.h5": {
+      "bytes": 11819696,
+      "sha256": "7d1f395d573e67aeea5767fd03ac69033ed37542f681868a4e3a6f6e9c75df91"
+    },
+    "AX_2008_2009.h5": {
+      "bytes": 15863788,
+      "sha256": "d47a3daea87c3363ad79cbef162160c1df01e7919f1c214b40ca966bfac30188"
+    },
+    "AX_2009_2010.h5": {
+      "bytes": 17438982,
+      "sha256": "950aa41e2f96f775125106a730dc64fe17650b4a87449a4d3b31454f006f5b81"
+    },
+    "AX_2010_2011.h5": {
+      "bytes": 13831229,
+      "sha256": "373c2b2a0003689d4c6ae06ca665fab3a1b502404916e7b4c5febe52ad723fe4"
+    },
+    "AX_2011_2012.h5": {
+      "bytes": 12171258,
+      "sha256": "7949ba6941820db41f383e61fac0aa43b57832f7afa4f93558d01ab1c0dabfff"
+    },
+    "AX_2012_2013.h5": {
+      "bytes": 23639416,
+      "sha256": "335ee7c7874b24d93e65a2f552e7bc98c3095b84a9605060820b8fc2fa18d0ad"
+    },
+    "CZ05_2007_2008.h5": {
+      "bytes": 2725255,
+      "sha256": "e03fed730892b22ef000f6dda39d1eeeb564db843f95b5dd6882541d0c2773a0"
+    },
+    "CZ05_2008_2009.h5": {
+      "bytes": 44960162,
+      "sha256": "4c3c54f3c1da851632cae5a4c8978ddfadc22bdc1e5e7ef420cc627d4a8cdf6f"
+    },
+    "CZ09_2007_2008.h5": {
+      "bytes": 11804792,
+      "sha256": "489286902732b7b25b408714bebd52f6a588da06902ea603d509af03e67b6b86"
+    },
+    "CZ09_2008_2009.h5": {
+      "bytes": 28333193,
+      "sha256": "cd9cb5fddfbd0eb3e311d82a4ab191798e53248bff666a5728b288fadde2ee32"
+    },
+    "CZ_2007_2008.h5": {
+      "bytes": 7385555,
+      "sha256": "064a0a9a9f790a2e72ccb535de3cf99b47d7a09e18f4d7ea61594609f134baf9"
+    },
+    "CZ_2008_2009.h5": {
+      "bytes": 42271636,
+      "sha256": "fdcac93888ce4fac1bcebb9799554621b49155e6c8d23e3d644130f96b147d10"
+    },
+    "G03A_2011_2012.h5": {
+      "bytes": 11631595,
+      "sha256": "a80fbf612997c522e910fc55c3cba9b1034b5f6ebcf2e4f13cc9cac4b9d9f88d"
+    },
+    "G30A_2011_2012.h5": {
+      "bytes": 12576574,
+      "sha256": "91c5d3b7e09d4ccaf003a64d2aa85b833c34752e35813aa5f87f1ec13f7b8e58"
+    },
+    "J06A_2011_2012.h5": {
+      "bytes": 21593764,
+      "sha256": "58fcfbfd1a281c8ae33b33081bee18ae0fdaf4cf93727b04c756954f18527c95"
+    },
+    "J23A_2011_2012.h5": {
+      "bytes": 9038910,
+      "sha256": "893399667861c35c2d3adb4c520c95f7879ff665c4853685079007d4b29d28fc"
+    },
+    "J63A_2011_2012.h5": {
+      "bytes": 8018315,
+      "sha256": "9e8c45fb4b22a5918aac0e1335440f915153c94705681e7b6765dd4b1e7ca02e"
+    },
+    "KEMF_2011_2012.h5": {
+      "bytes": 7000224,
+      "sha256": "14b37ca16aa022b32393305067d52025101721a8cc7aa8a5adacb5ccbe205a8c"
+    },
+    "KEMF_2012_2013.h5": {
+      "bytes": 13632426,
+      "sha256": "239a424b15ea501fa352b2c971bf76e8acb677a6a5fde4209d996ee5cb7abad4"
+    },
+    "KENE_2003_2004.h5": {
+      "bytes": 21011643,
+      "sha256": "c8feb40341be51e7381a7c0b55baa7f10c3c671fa0fd52ef573a63318a414065"
+    },
+    "KENE_2004_2005.h5": {
+      "bytes": 18122573,
+      "sha256": "591cd1ad931dcd0436a977e6c8814892669f8ab56b13b7791e2719f12277498b"
+    },
+    "KENE_2005_2006.h5": {
+      "bytes": 22014428,
+      "sha256": "709f36ce6779fbec8027f136639ad5854af02eb20e0a482390e3bc6554adc665"
+    }
+  }
+}
