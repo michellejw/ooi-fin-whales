@@ -7,7 +7,9 @@ Extending the 2003-2013 fin whale time series (Weirathmueller et al. 2017,
 PLoS ONE 12(10) e0186127) into the OOI era using an automated detector.
 Measuring inter-pulse interval (IPI) and peak frequency of the 20 Hz call.
 
-Started 2026-08-29. Supersedes the Feb 2026 planning in `archive-2026-02/`.
+Started 2026-08-29. Aimed at a follow-up paper to the 2017 study, with
+co-authors. That target is why the archiving, reproducibility and decision
+record here are treated as methods rather than as polish.
 
 ## Status
 

@@ -4,6 +4,13 @@ Read `README.md` first: it covers the science, the four-stage design, the data,
 and the validation approach. This file only carries what a contributor needs
 that the README does not say.
 
+## What this is for
+
+Aimed at a follow-up paper to Weirathmueller et al. 2017, with co-authors not
+yet chosen. That target is why the archiving, the pinned dependencies, the
+three reproducibility rungs and the `notes/` decision record are treated as
+methods rather than as polish. Stated 2026-08-31.
+
 ## Where the reasoning lives
 
 `notes/` carries the decision record and the evidence behind it. It is in the

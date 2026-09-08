@@ -149,6 +149,7 @@ Recorded because they will cause confusion later, not because they matter much.
   give ~3.5 km.
 - Table 1 names one COLZA station; the archive has three COLZA prefixes.
 - Table 2 singlet false rate printed as 0.4%, but 14/1290 is 1.1%.
+
 None of these change the paper's conclusions. The false-rate arithmetic is
 the one worth a formal correction, because this project benchmarks its new
 detector against that number and 0.4% against 1.1% is a 2.75x difference in
