@@ -138,20 +138,22 @@ Singlet-to-doublet: doublets appear at very low levels as early as 2005-06,
 well established by 2008-09, and by 2012-13 the singlet had essentially
 disappeared.
 
-## Discrepancies in the published paper
+## Reconciling the paper against the archive
 
-Recorded because they will cause confusion later, not because they matter much.
+A handful of small internal inconsistencies turn up when the text is read
+against the archived data: station counts, a couple of dates, an instrument
+separation, and one percentage. None of them bear on the paper's conclusions.
+They are noted here only because two of them affect what this project has to
+do, and both are resolved by taking the archive as authoritative.
 
-- Results say "8 sites", Table 1 lists nine.
-- KEMF dates given as 2010-2012 in Methods, 2011-2013 in Table 1 and Results.
-  Archived filenames support 2011-2013.
-- KENE-KEMF separation given as 4 km in Methods, 14 km in Results. Coordinates
-  give ~3.5 km.
-- Table 1 names one COLZA station; the archive has three COLZA prefixes.
-- Table 2 singlet false rate printed as 0.4%, but 14/1290 is 1.1%.
+**Which KEMF seasons exist.** Methods and Table 1 disagree by a year. The
+archived filenames settle it: 2011-2012 and 2012-2013.
 
-None of these change the paper's conclusions. The false-rate arithmetic is
-the one worth a formal correction, because this project benchmarks its new
-detector against that number and 0.4% against 1.1% is a 2.75x difference in
-the thing being compared. The general lesson is adopted here as a rule:
-numbers quoted in prose are generated from the data, never typed.
+**The detector performance figure to benchmark against.** Recompute it from
+the counts in Table 2 rather than quoting the printed percentage. The
+validation design here measures the bias between the 2013 method and the new
+one, so the old detector's error rates have to be right, and they should come
+from the underlying numbers either way.
+
+The general lesson is adopted here as a rule: numbers quoted in prose are
+generated from the data, never typed.
