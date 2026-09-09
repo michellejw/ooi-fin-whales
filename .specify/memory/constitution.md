@@ -1,39 +1,22 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Pacific Indices Constitution, Fin Whale Detection Constitution -->
-
-<!--
-  This is the study's standing record of facts and commitments. Everything a
-  stage spec can assume without restating lives here.
-
-  The principles below are fixed. Everything else is a slot for you to fill.
-  That split is deliberate: the principles hold in any study that uses this
-  preset, while the slots are where studies actually differ from one another.
-
-  Fill it once at the start, amend it when a fact changes, and record the
-  amendment. A constitution that silently drifts is worse than none, because
-  the specs beneath it go on citing something that is no longer true.
--->
+# Fin Whale Call Detection Constitution
 
 ## What this study is
 
-**Question.** [RESEARCH_QUESTION]
-<!-- One or two sentences. The question the study answers, not the methods used. -->
+**Question.** Between 2003 and 2013 the 20 Hz fin whale call at the Endeavour
+segment slowed and dropped in pitch, and the song shifted from singlet to
+doublet. Did those trends continue through to the present?
 
-**Deliverable.** [DELIVERABLE]
-<!-- Example: a methods paper in Methods in Ecology and Evolution; a chapter; an internal report plus figures -->
+**Deliverable.** A follow-up paper to Weirathmueller et al. 2017, PLoS ONE
+12(10) e0186127, reporting the extended series together with a measured bias
+between the 2013 detection method and the one used here.
 
-**Who does what.** [DIVISION_OF_LABOUR]
-<!-- Name the collaborators and what each one produces. Say explicitly which
-     inputs arrive from someone else, because those set the input contract and
-     you cannot change them unilaterally. -->
+**Who does what.** Single author at present. Co-authors are intended but not
+chosen; the choice is open and is recorded in `notes/index.md` when made. No
+input arrives from a collaborator, so every input contract below is one this
+study controls and could in principle change. The one exception is the 2017
+archive, which is fixed by having been published.
 
 ## Core Principles
-
-<!--
-  Do not edit or delete these per project. If one genuinely does not fit the
-  study in front of you, that is worth a conversation and an amendment note,
-  not a silent removal.
--->
 
 ### I. Raw data is immutable
 
@@ -75,123 +58,182 @@ someone's memory. The Data sources section is that place.
 
 ## Data sources
 
-<!--
-  One entry per input. Fill the defects line even when it says "none known" so
-  that a blank is unambiguous. If an input arrives from a collaborator, say who
-  and in what format, because changing it means asking them.
--->
+### FDSN waveforms, NV.KEMF EHZ
 
-### [SOURCE_NAME]
-<!-- Example: Acoustic indices from OSA; FDSN broadband waveforms; ERDDAP satellite covariates -->
+- **What it is.** Continuous vertical-channel seismometer data at Main Endeavour
+  Field, 47.9496N 129.0987W, 2190 m. Recording since 2010-09-30 and still
+  running. GeoSENSE BH-1 corehole seismometer, Guralp DM24-MK3 datalogger.
+- **Who produces it.** Ocean Networks Canada, network NV. Retrieved through the
+  EarthScope FDSN web service.
+- **Shape and resolution.** miniSEED, consumed as obspy Streams. 100 Hz until
+  2013-03-01, 200 Hz after. One row per sample.
+- **Version pinned.** Not pinned, and does not need to be: every retrieval
+  writes a manifest to `manifests/` recording network, station, channel, time
+  window, response epoch, sample rate and retrieval timestamp, so any cached
+  file is reconstructible. The archive is not being revised.
+- **Known defects.** None known in the record itself. The sample rate changes at
+  2013-03-01 but the instrument does not, and the response is flat across the
+  15-35 Hz analysis band: 0.20 dB total tilt, with the two sampling epochs
+  differing by at most 0.004 dB. Evidence in
+  `notes/probes/05-instrument-response.md`.
 
-- **What it is.** [SOURCE_DESCRIPTION]
-- **Who produces it.** [SOURCE_OWNER]
-- **Shape and resolution.** [SOURCE_SCHEMA]
-  <!-- Format, key columns, one row per what, temporal and spatial resolution. -->
-- **Version pinned.** [SOURCE_VERSION]
-  <!-- A date, a DOI, an archive snapshot, a commit. If the upstream source is
-       being revised while the study runs, this is the field that decides
-       whether results are comparable later. Record the decision to pin or to
-       recompute, and say which was chosen. -->
-- **Known defects.** [SOURCE_DEFECTS]
-  <!-- Gaps, duplicates, naming irregularities, values that are missing versus
-       values that are genuinely zero. Measured numbers beat impressions. -->
+### Archived per-note detections from the 2017 study
+
+- **What it is.** Every note the original matched filter found, across 23
+  station-seasons, including KEMF 2011-2012 and 2012-2013. The validation
+  baseline.
+- **Who produces it.** The 2017 study. Published at
+  `github.com/michellejw/fin-call-patterns`.
+- **Shape and resolution.** 23 HDF5 files, one per station-season, one row per
+  note. Columns `dettime, frequency, snr, siglevel, station, isseq, boutnum,
+  seqnum, ipi`. They are pandas HDFStore *fixed-format* frames, pandas 0.15.2,
+  so h5py needs the `df/axis0` to `df/blockN_items` block mapping. `dettime` is
+  datetime64[ns] UTC stored as int64, `ipi` is timedelta64[ns] stored as int64,
+  and `station` is a pickled object array best taken from the filename.
+- **Version pinned.** Yes. Commit `5ba449c42939aeb3f44068de3cf26a9b1e7b754c`,
+  with a sha256 per file, recorded in
+  `manifests/ground-truth-fin-call-patterns.json`. Pinning was necessary: the
+  upstream has no licence, no DOI, and a mutable `master`.
+- **Known defects.** The `boutnum` column is all zeros at KEMF 2011-2012 and
+  carries no information. The published per-season summary in
+  `SEQ_CODE/ALL_seq_YEARLY_4nov2016_5dBthresh_kurtosis.csv` contains rows with
+  `peakcounts` of zero and minor clusters that are not the singlet A note, so
+  selecting the dominant cluster per station-season is required rather than
+  optional. Five small internal inconsistencies in the paper's text are
+  reconciled in `notes/literature/2017-paper-data-section.md`; the archive is
+  authoritative where they disagree.
+
+### Whale-VAD detector checkpoint
+
+- **What it is.** The neural detector's released weights, loaded via
+  `torch.hub`.
+- **Who produces it.** `github.com/CMGeldenhuys/Whale-VAD`, GPL-3.0, kept behind
+  the optional `whalevad` extra.
+- **Shape and resolution.** Frame-level class probabilities, hop 5 at 250 Hz,
+  so 50 frames per second.
+- **Version pinned.** **NOT YET PINNED. This is an open defect.** It is a
+  `torch.hub` pull from a third-party repository with no version guarantee, and
+  it is the one remaining input that could silently make detection results
+  unreproducible. Pin it and record a sha256 in a `kind: external-archive`
+  manifest, as was done for the 2017 archive.
+- **Known defects.** The released checkpoint emits seven classes, not the three
+  its README and `_class_mapping` describe. The label order is undocumented and
+  must be resolved by correlating each channel against the archived ground-truth
+  detections.
 
 ### Record of examination
 
-[EXAMINATION_RECORD]
-<!-- Principle IV made concrete. Which input tells you what was examined, as
-     distinct from what was found? Name the file or the field. If no such
-     record exists yet, say so plainly and treat obtaining it as a blocking
-     input rather than a detail, because nothing downstream can be a rate
-     without it. -->
+`manifests/` is the record. Each JSON records a retrieval and the exact time
+window it covers, so a window that was fetched and yielded no detections is
+distinguishable from a window that was never fetched. This distinction is
+load-bearing here: call rates and seasonal presence are meaningless without it,
+and a season absent from the results could otherwise mean either silence or an
+unprocessed gap. No detection table may be interpreted as a rate without the
+matching manifest coverage.
 
 ## Technical environment
 
-**Runtimes.** [RUNTIMES]
-<!-- Example: Python via uv, R via renv. Say what each is used for and why both
-     are needed, if both are. -->
+**Runtimes.** Python only, managed with `uv`. Never pip, never conda. The
+original 2017 analysis code is MATLAB and is read for reference, in the pinned
+archive, but is not executed as part of this study.
 
-**Pipeline form.** [PIPELINE_FORM]
-<!-- Staged scripts, or notebooks. This is a real fork: it changes what a stage
-     spec's outputs look like and how a rerun is triggered. Pick one and say it. -->
+**Pipeline form.** Marimo notebooks, one per stage, in `notebooks/`. Reactive
+DAG, plain Python on disk, no hidden execution order. Code moves to
+`src/ooi_fin_whales/` once used by more than one notebook. A rerun is triggered
+by running the notebook for a stage and those downstream of it.
 
-**Where outputs go.** [OUTPUT_LAYOUT]
-<!-- The directory convention for models, tables, figures and logs. -->
+**Where outputs go.** Four tiers, split by row granularity and enforced by
+`tests/test_repo_hygiene.py`:
+
+- `data/` raw waveforms. Gitignored, reconstructible from `manifests/`.
+- `work/` one row per note, plus frame probabilities and caches. Gitignored,
+  destined for a Zenodo archive with a DOI.
+- `results/` one row per season, plus trend fits and exemplar clip tables.
+  Committed, and held under 1 MB per file by test.
+- `manifests/` one JSON per retrieval. Committed.
 
 ## Conventions
 
-**Units and coordinate systems.** [UNITS_AND_CRS]
-<!-- Include the reference for anything in decibels, since the reference is what
-     makes the number meaningful. -->
+**Units and coordinate systems.** Frequency in Hz, intervals in seconds,
+positions in decimal degrees WGS84, depth in metres. The `snr` column in the
+archive is a ratio in dB and needs no reference. The `siglevel` column is in dB
+but its reference is not documented in the paper and has not been recovered;
+it is not used quantitatively anywhere in this study, and if that changes the
+reference must be established first rather than assumed.
 
-**Time.** [TIME_CONVENTIONS]
-<!-- UTC is the default under Principle V. Record any place local or solar time
-     is used, and the parsing rules for any timestamp format that has bitten you. -->
+**Time.** UTC throughout, with no exception so far. Neither diel nor lunar
+analysis is planned. Seasons run November to March and are labelled by the
+starting year, so "2011-2012" begins in November 2011, matching the archive's
+`datevec` convention of dating each season to its November.
 
-**Naming.** [NAMING_CONVENTIONS]
-<!-- Write down the conventions a reader needs in order to find things: script
-     names, output names, anything with a pattern worth relying on. This is the
-     right place for them, and leaving it blank helps nobody.
-
-     They belong here rather than under Core Principles because a principle is
-     something you would defend when it becomes inconvenient, and a convention
-     is something you would happily swap for a better one. Filing a convention
-     as a principle makes a cheap decision expensive to change, and it teaches
-     readers that the principles list is not load-bearing.
-
-     One practical caution, not a rule: script names that encode stage numbers
-     desync the first time a stage is inserted, dropped or superseded, which
-     this workflow expects to happen. The numbered spec directories already
-     carry that ordering, so the scripts do not have to. -->
+**Naming.** Archived station-season files are `<STATION>_<YYYY>_<YYYY>.h5`, and
+the station is taken from the filename rather than the pickled column. Manifests
+are named for what they record and carry a `kind` field, either `fdsn-pull` or
+`external-archive`. Stage ordering lives in the numbered spec directories, not
+in script or notebook names, so that inserting or superseding a stage does not
+desync anything.
 
 ## Figure standards
 
-[FIGURE_STANDARDS]
-<!-- Palette, font sizes, dimensions, format, colour-vision safety, and where
-     figures are written. Enough that two figures made months apart match. -->
+Not yet established. No figure has been produced. This section is a known gap
+and must be filled before the first figure intended for the paper, not after,
+because two figures made months apart will not otherwise match. The one fixed
+requirement so far is that every plotted number comes from a file in `results/`
+rather than from a value typed into the plotting code.
 
 ## How this project works
 
-**Decision record.** [DECISION_RECORD_LOCATION]
-<!-- Where decisions and their reasons are written down, and what belongs there
-     as opposed to in a stage spec's Outcome section. -->
+**Decision record.** `notes/index.md` holds a decisions table, one row per
+decision with its rationale. `notes/probes/` holds one file per question
+answered, with the evidence, and `notes/literature/` holds notes on the source
+paper and the detector survey. A decision that shapes more than one stage
+belongs there. A finding confined to one stage belongs in that stage spec's
+Outcome section.
 
-**Work tracking.** [WORK_TRACKING]
-<!-- Default is none: stage specs in numbered directories are the whole record,
-     which is all a study needs and all a newcomer should have to learn.
-     Set this to issues and the assistant creates and closes an issue per stage
-     spec, numbered to match its directory, so the map stays current as a side
-     effect of the work rather than as a chore. Choosing issues does not mean
-     you type git commands. -->
+**Work tracking.** None. Stage specs in numbered directories are the whole
+record. This is a single-author study and adding an issue tracker would create
+a second place for the truth to live.
 
-**Voice.** [VOICE_GUIDE]
-<!-- Point at whatever writing guidance you already keep, rather than restating
-     its rules here, so that the two cannot drift apart. That might be a file in
-     this repo, a note in your own reference system, or a shared house style.
-     If there is none, say so, and the plain-language line in each stage spec is
-     written in whatever voice the study's audience needs. -->
+**Voice.** Technical and explanatory, aimed at a reader who knows acoustics but
+not this dataset. Precision over simplification: name real quantities and real
+column names rather than gesturing at them. No em dashes. State findings
+directly rather than building up to them. The repository's existing prose,
+particularly `README.md` and the probe notes, is the reference for tone.
 
 ## Quality gates
-
-<!-- These are checks that must pass, not aspirations. Add study-specific ones;
-     do not remove the first three, which restate Principles I through III in a
-     form you can actually run. -->
 
 - A clean rerun reproduces every number in the current results.
 - Every figure and table traces to a script, an input, and a parameter set.
 - Raw data is unmodified since acquisition.
 - Row counts survive every join, and every dropped row is accounted for
   deliberately rather than by default.
-- [STUDY_SPECIFIC_GATES]
-  <!-- Write these as checks someone could run and get a pass or fail from, not
-       as statements of intent.
-
-       Example: every model converges before anything downstream of it runs.
-       Example: every index value falls inside the range documented for it.
-       Example: every detection timestamp falls inside the time span of the
-       recording it is attributed to, which catches both a mis-parsed timestamp
-       and a join that put a detection on the wrong file. -->
+- **The Fig 7 reproduction still holds.** Extracting from the archived per-note
+  file for KEMF 2011-2012, under the study's own selection rules, returns
+  19.2 Hz and 28.5 s to within one histogram bin. Refitting the decadal trend on
+  the dominant singlet A-note cluster per station-season across Axial, KENE and
+  KEMF, excluding AX 2012-13, returns +0.534 s/yr at an R-squared of 0.96
+  against a published +0.54 at 0.96. If this stops passing, the measurement
+  path has drifted. Established in `notes/probes/06-fig7-reproduction.md`.
+- **Selection rules are applied before any peak extraction.** Singlet is
+  IPI > 22 s, note A is frequency < 22 Hz, and the archived recipe adds in
+  sequence, IPI < 60 s, SNR > 5 dB, sequence length > 10 notes. Both
+  distributions are bimodal with the wrong mode taller, so an extraction that
+  omits these returns the B note and the doublet interval while looking
+  entirely reasonable.
+- **Peak extraction is two-dimensional in (frequency, IPI).** Two independent
+  one-dimensional histograms are not equivalent and do not reproduce the
+  archive.
+- **Any frequency comparison between KEMF and the published trend states how
+  the station offset was handled.** Axial and KEMF differ by 0.80 Hz in the one
+  season both recorded, against a total decadal change of about 1.5 Hz, while
+  IPI is identical. A frequency result that does not address this is not
+  reportable. IPI requires no such statement.
+- **IPI computed by this code from archived detection times matches the
+  archive's own `ipi` column.** This tests the measurement stage directly,
+  independently of any detector.
+- **Every detection timestamp falls inside the time span of the manifest
+  window it is attributed to.** Catches both a mis-parsed timestamp and a join
+  that put a detection on the wrong retrieval.
 
 ## Governance
 
@@ -203,6 +245,8 @@ Amendments name what changed and why. A fact that turned out to be wrong is
 amended rather than quietly overwritten, because the specs that cited it may
 need revisiting.
 
-[GOVERNANCE_NOTES]
+Two sections are knowingly incomplete at ratification and are tracked as gaps
+rather than left to be noticed later: the Whale-VAD checkpoint is not pinned,
+and no figure standards exist. Both are named in place above.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+**Version**: 1.0.0 | **Ratified**: 2026-09-08 | **Last Amended**: 2026-09-08
