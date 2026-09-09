@@ -101,6 +101,33 @@ The measurement stage is also tested directly against those files: given the
 archived detection times, the IPI our code computes must match the archived IPI
 column.
 
+The reproduction has been carried out and it works, which is what makes the
+comparison above meaningful. Applying the 2017 study's own selection rules,
+KEMF 2011-2012 recomputes from the per-note files to 19.15 Hz and 28.25 s
+against an archived 19.2 and 28.5, and refitting the decadal trend returns
++0.534 s/yr at an R-squared of 0.96 against a published +0.54 at 0.96. Details
+and the exact rules are in `notes/probes/06-fig7-reproduction.md`.
+
+### A station offset in frequency
+
+That work surfaced a constraint on what this project can claim. 2011-2012 is
+the one season Axial and KEMF both recorded:
+
+| Station | Sensor | Depth | Frequency | IPI |
+|---|---|---|---|---|
+| Axial | Hydrophone | 1550 m | 18.40 Hz | 28.50 s |
+| KEMF | Seismometer | 2205 m | 19.20 Hz | 28.50 s |
+
+IPI is identical. Frequency differs by 0.80 Hz, against a total decadal change
+of roughly 1.5 Hz, so more than half of the published frequency signal is
+station rather than song. The published trend is fitted mostly on Axial, so
+extending it at KEMF requires handling that offset explicitly rather than
+appending new points to an old line. IPI carries no such penalty.
+
+The cause is open. It is not instrument response, which is flat across the band
+at KEMF. Sensor type, depth, propagation path, and a noise floor shifting an
+amplitude-weighted centroid are all untested candidates.
+
 ## Repository layout
 
 ```

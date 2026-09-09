@@ -32,12 +32,22 @@ is not a rationale.
 - **"Peak frequency" is an amplitude-weighted centroid** over +/-0.5 s and
   15-35 Hz, defined by an equation in the paper's Methods. It is not an argmax
   peak pick. Pick spectral peaks and the numbers will not be comparable.
-- **The archived frequency distribution is bimodal, and the taller mode is the
-  wrong note.** On KEMF 2011-2012 the modes sit near 19.1 and 22.9 Hz, the
-  higher one carrying roughly twice the counts, so a global argmax returns
-  23.05 Hz against a published ~18.3 Hz. The A note is the lower mode. Select
-  the mode, do not take the maximum. This is a separate error from the centroid
-  one above and survives getting that one right.
+- **Reproducing any published value needs the paper's own selection rules
+  applied first.** Singlet is IPI > 22 s and doublet IPI <= 22 s; note A is
+  frequency < 22 Hz and note B >= 22 Hz. The archived analysis adds a house
+  recipe: in sequence, IPI < 60 s, SNR > 5 dB, sequence length > 10 notes. Both
+  distributions are bimodal with the *wrong* mode taller, so skipping the rules
+  and taking a global argmax returns the B note (23.05 Hz) and the doublet
+  interval (14.75 s) instead of 19.2 Hz and 28.5 s. Peak extraction is also 2D
+  in (frequency, IPI), not two independent 1D histograms. Worked through in
+  `notes/probes/06-fig7-reproduction.md`.
+- **KEMF reads about 0.8 Hz higher than Axial, while IPI is identical.**
+  Measured in 2011-2012, the one season both recorded: Axial 18.40 Hz /
+  28.50 s, KEMF 19.20 Hz / 28.50 s. The whole decadal frequency change is about
+  1.5 Hz, so more than half of it is station rather than signal. Any
+  KEMF-against-published frequency comparison has to handle that offset
+  explicitly. IPI needs no such correction. It is not instrument response,
+  which probe 5 measured flat to 0.20 dB across the band.
 - **Do not correct the instrument response** in the reproduction leg. The 2017
   study did not (`p.resp = 1`, a no-op), so its published centroids are of the
   uncorrected spectrum. Matching it means deliberately not doing the more
