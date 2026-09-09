@@ -1,0 +1,191 @@
+# Stage Specification: [STAGE_NAME]
+<!-- Example: Ingest delivered detections and indices; Fit seasonal GAMMs -->
+
+**Stage directory**: `[###-stage-name]`
+
+**Created**: [DATE]
+
+**Status**: draft
+
+**Input**: "$ARGUMENTS"
+
+<!--
+  One stage of the analysis pipeline. A stage is a step that takes named inputs,
+  computes something, and writes named outputs that a later stage can consume.
+
+  This is not a software feature. There are no user stories here, and the stages
+  are not independent slices you could build in any order. They are a dependency
+  chain, and each one inherits the last one's output along with its defects.
+
+  Two sections do work that a software spec has no need for. Status lets a stage
+  be blocked, superseded, or abandoned rather than only done. Outcome records
+  what actually happened once the work ran. Together they let the record survive
+  a result that shows an earlier stage, or the question itself, was wrong. That
+  is a finding rather than a failure, and it is usually worth writing about.
+-->
+
+## Status *(mandatory)*
+
+Set the Status field above to one of these. Anything other than `draft` or
+`active` needs the reason written in Outcome.
+
+| Status | Means |
+|---|---|
+| `draft` | Being written. Not agreed yet. |
+| `blocked` | Cannot be specified or run until something arrives. Name it below. |
+| `active` | Agreed, and being implemented. |
+| `done` | Implemented, acceptance checks pass, Outcome written. |
+| `superseded by [###-stage-name]` | A later stage replaces this one. Outcome says why. |
+| `abandoned` | Will not be done. Outcome says why. |
+
+**Blocked on.** [BLOCKING_DEPENDENCY]
+<!-- Delete this line unless status is blocked. Name the specific thing you are
+     waiting for and who or what provides it, so that its arrival is something
+     anyone can recognise. "Waiting on the full index delivery, which sets the
+     station and month list" is checkable. "Waiting on data" is not. -->
+
+<!--
+  Never delete or rewrite a superseded or abandoned spec. Change its status,
+  write its Outcome, and leave the rest as it was. The record of a branch not
+  taken is the thing that stops someone re-deriving it in six months, and it is
+  often the part that ends up in the methods section.
+
+  A document that quietly stops being true while still reading as authoritative
+  does more damage than no document at all.
+-->
+
+## Question *(mandatory)*
+
+**What this stage answers.** [STAGE_QUESTION]
+<!-- One or two sentences, phrased as a question or a claim you could check.
+     Not a task description. "Does index coverage support treating unreviewed
+     files as silence?" is a question. "Load the indices files" is a task. -->
+
+**Why this is a separate stage.** [WHY_SEPARATE]
+<!-- If the honest answer is that it was convenient, merge it into a neighbour.
+     Good reasons: it produces an artifact something else consumes; it can fail
+     on its own terms; it is where a real decision gets made; it is slow enough
+     that you do not want to rerun what precedes it. -->
+
+## Inputs *(mandatory)*
+
+<!--
+  The study constitution holds the external data sources. Do not restate them.
+  List what THIS stage consumes, which is usually a previous stage's output plus
+  anything new, and record the defects that matter here specifically.
+-->
+
+### [INPUT_NAME]
+
+- **Where it comes from.** [INPUT_SOURCE]
+  <!-- A previous stage directory, or an external source named in the constitution. -->
+- **Shape.** [INPUT_SCHEMA]
+  <!-- Format, key columns, one row per what, resolution. -->
+- **Defects that matter here.** [INPUT_DEFECTS]
+  <!-- Not every known flaw. The ones that could change this stage's answer.
+       Mark anything you have not measured as [NEEDS CLARIFICATION: ...] rather
+       than guessing, and treat measuring it as part of the stage. -->
+
+## Method *(mandatory)*
+
+**What is computed.** [METHOD_DESCRIPTION]
+<!-- Enough that someone could implement it without reading the code. Name the
+     library or function where the choice is load-bearing. Skip the parts that
+     any competent implementation would do the same way. -->
+
+### Parameters that change the answer
+
+<!--
+  ACTION REQUIRED: List every parameter whose value would change the result, and
+  the value chosen. This table is what makes the stage reproducible and what a
+  methods section is eventually written from.
+
+  A parameter with no justification is fine, as long as it says so. "Default,
+  not examined" is honest and useful. A silently chosen value is neither.
+-->
+
+| Parameter | Value | Why this value |
+|---|---|---|
+| [PARAM_NAME] | [PARAM_VALUE] | [PARAM_JUSTIFICATION] |
+
+**Anything random.** [RANDOMNESS]
+<!-- Name the seed and where it is set, or write "nothing random here". A blank
+     leaves the next reader unable to tell which one it was. -->
+
+## Outputs *(mandatory)*
+
+### [OUTPUT_NAME]
+
+- **Path.** [OUTPUT_PATH]
+- **Shape.** [OUTPUT_SCHEMA]
+  <!-- Format, columns with types and units, one row per what. Downstream stages
+       cite this, so it is a contract rather than a description. -->
+- **Regenerable from.** [OUTPUT_PROVENANCE]
+  <!-- The script plus the inputs plus the parameter set above. If an output
+       cannot be regenerated, say so and explain why, because the constitution
+       says every number traces to its inputs. -->
+
+## Acceptance checks *(mandatory)*
+
+<!--
+  ACTION REQUIRED: Write these as checks that pass or fail, and write them
+  BEFORE implementing. The question to answer is not "how would I know this
+  worked" but "how would I find out this was wrong".
+
+  Good checks are counts, ranges, and invariants. Reserve judgement calls for
+  where they are genuinely needed, and say who makes them.
+-->
+
+- **AC-001**: [ACCEPTANCE_CHECK]
+  <!-- Example: every input row appears exactly once in the output, or in the
+       dropped-rows log with a reason. -->
+- **AC-002**: [ACCEPTANCE_CHECK]
+  <!-- Example: no value of [column] falls outside [documented range]. -->
+- **AC-003**: [ACCEPTANCE_CHECK]
+  <!-- Example: rerunning from clean inputs reproduces the output byte for byte,
+       or for a format with embedded timestamps, value for value. -->
+
+**Rows that disappear.** [ROW_ACCOUNTING]
+<!-- Any join or filter here that can drop rows: say how many you expect to
+     lose and why. An unexplained drop is the single most common way a result
+     turns out to be about a subset nobody meant to select. -->
+
+## In plain language *(mandatory)*
+
+[PLAIN_LANGUAGE_LINE]
+<!-- One or two sentences on what this stage would tell someone outside the
+     field. Not a summary of the method. What the reader learns, or what becomes
+     possible, because this stage ran.
+
+     It costs a sentence while the work is fresh, and it accumulates into the
+     raw material for talks, abstracts, and anything written for a general
+     audience. Written afterwards from the code, it is much harder. -->
+
+## Outcome
+<!--
+  Left empty until the stage has run. Then fill it in, including when everything
+  went as expected, because "no surprises" is itself worth recording.
+-->
+
+**What happened.** [OUTCOME_SUMMARY]
+<!-- Did the checks pass? What did the numbers turn out to be? -->
+
+**What was surprising.** [OUTCOME_SURPRISES]
+<!-- The things you did not predict. This is the section most likely to end up
+     in the paper, and the one most easily lost if it is not written down while
+     it is still surprising. -->
+
+**Does this change anything upstream.** [OUTCOME_UPSTREAM]
+<!-- The section that lets a stage fail backward. If the result shows an earlier
+     stage was wrong, or that the question was the wrong question, say so here
+     and name the stage. That is a finding, not a failure. Do not go back and
+     quietly edit the earlier spec; amend its status and let it keep its record. -->
+
+**What this changes downstream.** [OUTCOME_DOWNSTREAM]
+<!-- Anything a later stage must now assume, avoid, or handle. New defects
+     discovered here belong in the constitution's data sources too. -->
+
+**Which branch was taken.** [OUTCOME_BRANCH]
+<!-- Only if there was a fork. Name the option chosen, the options left, and
+     why. Leaving this blank when a real choice was made is how a study ends up
+     unable to explain itself later. -->

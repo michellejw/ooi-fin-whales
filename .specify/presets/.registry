@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "presets": {
+    "science-study": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:38f1a244a1fc1fd6e401d47f059f5798ad8276dc0157e4ac1f38ed2414bd3c60",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.pipeline"
+        ]
+      },
+      "registered_skills": {
+        "claude": [
+          "speckit-pipeline"
+        ]
+      },
+      "installed_at": "2026-09-09T02:05:36.416477+00:00"
+    }
+  }
+}

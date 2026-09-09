@@ -1,5 +1,14 @@
 # Scientific Python Development Guide, PY006.
 # Run `uvx pre-commit install` once to enable, `uvx pre-commit run -a` to check.
+
+# .specify/ is vendored spec-kit: its scripts, templates and the science-study
+# preset are copied in by `specify init` and replaced wholesale on upgrade.
+# Formatting or spell-fixing them writes changes that the next upgrade silently
+# discards, and codespell "corrects" identifiers in shell code. Left alone.
+# The project's own spec content lives in .specify/memory/ and specs/, which
+# are NOT excluded.
+exclude: '^\.specify/(scripts|templates|presets|integrations|workflows)/'
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0

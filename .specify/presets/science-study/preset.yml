@@ -1,0 +1,74 @@
+# Preset manifest for the science-study workflow.
+#
+# Schema verified 2026-09-04 against the installed specify-cli 1.0.5.dev0
+# (git df6b318). There is no JSON schema file; the validator in
+# specify_cli/presets/__init__.py, class PresetManifest, IS the schema.
+#
+# Three things that look wrong but are not:
+#   1. Commands live under provides.templates too. There is no provides.commands
+#      key. The `type` field is what separates a command from a template.
+#   2. There is no `replaces:` key here. The bundled `lean` preset carries one,
+#      but no code reads it. Overriding happens because `name` + `type` match a
+#      logical name the resolver already knows. Adding `replaces:` back would be
+#      a comment, not a mechanism.
+#   3. schema_version and version are quoted on purpose. Unquoted, YAML turns
+#      "1.0" into a float and validation fails with a message that reads as a
+#      contradiction: "Unsupported schema version: 1.0 (expected 1.0)".
+
+schema_version: "1.0"
+
+preset:
+  id: "science-study"
+  name: "Science Study"
+  version: "0.1.0"
+  description: "Spec-driven development adapted for a scientific analysis study: stages instead of features, acceptance checks instead of acceptance criteria, and a written outcome for results that fail backward."
+  author: "Waveform Analytics"
+  # repository and license are optional and display-only. Left out until the
+  # repo is actually published and the license is chosen.
+
+requires:
+  # Parsed as a packaging.SpecifierSet. Presets are a 1.0 feature, so this is the
+  # real floor rather than a guess. The installed 1.0.5.dev0 satisfies it because
+  # version_satisfies() passes prereleases=True.
+  speckit_version: ">=1.0.0"
+
+provides:
+  templates:
+    # --- template overrides -------------------------------------------------
+    # `name` must equal the core template's filename stem. The five that exist
+    # are constitution-template, spec-template, plan-template, tasks-template
+    # and checklist-template. plan-template is deliberately NOT overridden: a
+    # stage's plan is its method section, and the stock template does no harm.
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Per-study facts: data sources and their defects, runtimes, units and time zone, figure standards, how this project tracks work, where the archive version is pinned."
+
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "One pipeline stage: question, inputs, method, outputs, acceptance checks, plain-language line, and an outcome written after implementation."
+
+    - type: "template"
+      name: "tasks-template"
+      file: "templates/tasks-template.md"
+      description: "Tasks grouped by pipeline stage rather than by user story."
+
+    - type: "template"
+      name: "checklist-template"
+      file: "templates/checklist-template.md"
+      description: "Scientific correctness gates: clean-rerun reproducibility, fixed seeds, row counts surviving joins, figure provenance, untouched raw data."
+
+    # --- new command --------------------------------------------------------
+    # Not an override. There is no core `pipeline` command, so the default
+    # strategy of "replace" is correct; there is nothing underneath to wrap.
+    - type: "command"
+      name: "speckit.pipeline"
+      file: "commands/speckit.pipeline.md"
+      description: "Interview the researcher and turn a research question into a dependency-ordered stage list, marking each stage specifiable now or blocked pending an input."
+
+tags:
+  - "science"
+  - "research"
+  - "analysis"
+  - "reproducibility"
