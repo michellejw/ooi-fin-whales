@@ -28,6 +28,10 @@ dependencies = [
     "torchaudio>=2.0",
 
     "marimo>=0.9",
+
+    # Figures. Present transitively today, declared because the notebooks and
+    # every eventual paper figure depend on it directly.
+    "matplotlib>=3.8",
 ]
 
 [project.optional-dependencies]
@@ -64,6 +68,13 @@ log_level = "INFO"
 
 [tool.ruff]
 # No src setting: Ruff 0.6+ finds src/ on its own.
+
+[tool.ruff.lint.per-file-ignores]
+# Marimo notebooks are plain Python, but their cell structure trips four rules
+# that are correct everywhere else. Each cell is a function that ends in a
+# `return` tuple, holds its own imports so the reactive graph can track them,
+# and displays its last bare expression. Plot constants are not worth naming.
+"notebooks/*" = ["PLR1711", "PLC0415", "B018", "PLR2004"]
 
 [tool.ruff.lint]
 extend-select = [
