@@ -66,6 +66,34 @@ git add .specify/presets/science-study
 Confirm it worked with `git ls-tree HEAD .specify/presets/science-study/preset.yml`.
 The mode should read `100644`, not `160000`.
 
+## Keeping installed copies current
+
+`specify` copies this preset into a project at install time and nothing links
+the copy back here. Improving the preset therefore leaves every already-
+installed copy frozen at whatever it was when it was installed, and there is no
+warning. Two behaviours make that worse, both verified on 1.0.9:
+
+- Passing `--preset` to `init` does **not** refresh an already-installed preset.
+  It leaves the existing copy in place and reports success.
+- The gitlink trap fires on **both** install routes, not just `--dev`. Each one
+  copies this repository's own `.git`, so a plain `git add` in the consuming
+  project records a submodule and a clone gets an empty preset directory.
+
+So run the drift check rather than trying to remember:
+
+```bash
+scripts/check-drift.sh ~/dev/acoustics/*     # or no arguments to sweep ~/dev
+```
+
+It reports each installed copy as up to date, **behind**, or **LOCALLY
+MODIFIED**, and prints the exact refresh command for anything that has drifted.
+The distinction is the useful part. "Behind" is safe to refresh. "Locally
+modified" means a file in the copy matches no version in this repository's
+history, so someone edited the vendored copy directly and refreshing would
+discard their change; salvage it here first. The check also flags a gitlink if
+one has been committed. Exit status is non-zero when anything has drifted, so
+it works as a scheduled check or a pre-push hook.
+
 ## The two ideas worth knowing
 
 **Status and outcome let the record survive non-linear work.** Spec-kit's model
