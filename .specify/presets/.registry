@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "presets": {
     "science-study": {
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "local",
-      "manifest_hash": "sha256:f6f88dc5e97b4c78e94ea2c08b8b077a0fed24c02d34fb27b2494bc8789c5dbf",
+      "manifest_hash": "sha256:9ef09fc00eaafcd5f5db8ba5741a88416ff473af6665dce686c19e2b01b10404",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
@@ -17,7 +17,7 @@
           "speckit-pipeline"
         ]
       },
-      "installed_at": "2026-09-21T12:03:05.717303+00:00"
+      "installed_at": "2026-09-21T13:34:26.266706+00:00"
     }
   }
 }

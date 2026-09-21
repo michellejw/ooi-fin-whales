@@ -20,7 +20,7 @@ schema_version: "1.0"
 preset:
   id: "science-study"
   name: "Science Study"
-  version: "0.1.0"
+  version: "0.2.0"
   description: "Spec-driven development adapted for a scientific analysis study: stages instead of features, acceptance checks instead of acceptance criteria, and a written outcome for results that fail backward."
   author: "Waveform Analytics"
   # repository and license are optional and display-only in the validator.

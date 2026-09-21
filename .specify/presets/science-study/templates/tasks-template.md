@@ -68,6 +68,23 @@ write down what it is blocked on instead of working around it.
       pass or fail
 - [ ] T007 [S001] Confirm a clean rerun reproduces the output
 - [ ] T008 [S001] Account for every row lost at a join or filter
+- [ ] T009 [S001] Mutation pass. For each invariant and external check, break
+      the implementation in ONE small realistic way that violates it, confirm
+      the test meant to catch it goes red, restore, and verify the tree is
+      clean. Record the break and the result.
+
+<!-- A stage is not done until its mutation pass is recorded. A passing test
+     tells you two things agree. It does not tell you the test would have
+     noticed if they did not.
+
+     Three results worth acting on. Nothing goes red: that check is unverified.
+     A different test goes red but not the intended one: the intended test is
+     weak even though the suite caught the break. One test goes red for many
+     unrelated mutations: low specificity, worth splitting.
+
+     Measurement checks are exempt, because there is no break that makes a
+     measurement wrong. That exemption is exactly why they have to be labelled
+     in the spec rather than left to look like invariants. -->
 
 ### Record
 

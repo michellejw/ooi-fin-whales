@@ -132,16 +132,44 @@ Set the Status field above to one of these. Anything other than `draft` or
   BEFORE implementing. The question to answer is not "how would I know this
   worked" but "how would I find out this was wrong".
 
-  Good checks are counts, ranges, and invariants. Reserve judgement calls for
-  where they are genuinely needed, and say who makes them.
+  Every check carries a kind, because only two of the three can be written
+  before the code exists. Getting this wrong is the most common way a study
+  ends up with a green suite that proves nothing.
+
+    invariant   Must hold regardless of what the data turns out to contain.
+                Row counts survive a join, keys are unique, no timestamp falls
+                outside the window. Write it first. Watch it fail.
+
+    external    An expected value taken from a source OUTSIDE this pipeline: a
+                collaborator's own report, a published figure, an instrument
+                spec. Write it first. Watch it fail. These are the strongest
+                checks you will ever have, because nothing in your code can
+                bend them.
+
+    measurement Something you cannot know until you look. Which formats appear,
+                what the coverage is, how many rows fall in a gap. THIS IS NOT
+                A TEST. It is an output. It belongs in the run log and in
+                Outcome. Writing it as an assertion after seeing the answer
+                produces something that looks exactly like an invariant, passes
+                exactly as green, and can never fail.
+
+  A measurement may later be pinned as a regression guard, to catch drift. Mark
+  it `regression guard (pins the 2026-09-21 measurement)` so no one mistakes it
+  for evidence the code is correct.
+
+  Every claim in this spec that could be false needs a check. Those live in the
+  parameter table's "Why this value" column, each input's "Defects that matter
+  here", and the row-accounting line below. A claim with no check is either a
+  check you owe or a claim you should delete.
 -->
 
-- **AC-001**: [ACCEPTANCE_CHECK]
+- **AC-001** *(invariant)*: [ACCEPTANCE_CHECK]
   <!-- Example: every input row appears exactly once in the output, or in the
        dropped-rows log with a reason. -->
-- **AC-002**: [ACCEPTANCE_CHECK]
-  <!-- Example: no value of [column] falls outside [documented range]. -->
-- **AC-003**: [ACCEPTANCE_CHECK]
+- **AC-002** *(external)*: [ACCEPTANCE_CHECK]
+  <!-- Example: per-instrument row counts match the figures in the provider's
+       own summary report. -->
+- **AC-003** *(invariant)*: [ACCEPTANCE_CHECK]
   <!-- Example: rerunning from clean inputs reproduces the output byte for byte,
        or for a format with embedded timestamps, value for value. -->
 
