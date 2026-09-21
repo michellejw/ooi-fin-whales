@@ -161,17 +161,36 @@ Set the Status field above to one of these. Anything other than `draft` or
   parameter table's "Why this value" column, each input's "Defects that matter
   here", and the row-accounting line below. A claim with no check is either a
   check you owe or a claim you should delete.
+
+  EVERY invariant and external check also names its MUTATION: the one small
+  break that should make it fail, and the test expected to go red. Write it here
+  with the check, before the code exists. Naming the break forces you to answer
+  "how would this check fail" while you are writing the check, rather than after
+  seeing output that already passes.
+
+  A measurement check has no mutation, because there is no break that makes a
+  measurement wrong. If you cannot name one, you have found a check that is not
+  a test. That is the point of the field, not a gap in it.
+
+  An invariant or external check with an empty Mutation line is an unverified
+  row. The result of actually running it goes in Outcome.
 -->
 
 - **AC-001** *(invariant)*: [ACCEPTANCE_CHECK]
-  <!-- Example: every input row appears exactly once in the output, or in the
-       dropped-rows log with a reason. -->
+  - **Mutation**: [THE_BREAK]. Expect [TEST_NAME] to go red.
+  <!-- Example check: every input row appears exactly once in the output, or in
+       the dropped-rows log with a reason.
+       Example mutation: change the per-file row count to len(df) - 1. -->
 - **AC-002** *(external)*: [ACCEPTANCE_CHECK]
-  <!-- Example: per-instrument row counts match the figures in the provider's
-       own summary report. -->
-- **AC-003** *(invariant)*: [ACCEPTANCE_CHECK]
-  <!-- Example: rerunning from clean inputs reproduces the output byte for byte,
-       or for a format with embedded timestamps, value for value. -->
+  - **Mutation**: [THE_BREAK]. Expect [TEST_NAME] to go red.
+  <!-- Example check: per-instrument row counts match the figures in the
+       provider's own summary report.
+       Example mutation: relabel one row's instrument after the parse. -->
+- **AC-003** *(measurement)*: [ACCEPTANCE_CHECK]
+  - **Mutation**: none. A measurement cannot be broken into being wrong.
+  <!-- Example: which filename formats actually occur. Not knowable until the
+       data is read, so this is an output, not a test. It belongs in the run log
+       and in Outcome. -->
 
 **Rows that disappear.** [ROW_ACCOUNTING]
 <!-- Any join or filter here that can drop rows: say how many you expect to
@@ -197,6 +216,20 @@ Set the Status field above to one of these. Anything other than `draft` or
 
 **What happened.** [OUTCOME_SUMMARY]
 <!-- Did the checks pass? What did the numbers turn out to be? -->
+
+**Mutation pass.** [OUTCOME_MUTATIONS]
+<!-- One line per invariant and external check: the break applied, and whether
+     the expected test went red. Three results are worth acting on rather than
+     recording and moving past.
+
+       Nothing went red. That check is unverified. Fix the test, not the record.
+       A different test went red. The intended test is weak even though the
+         suite happened to catch the break.
+       One test goes red for many unrelated mutations. Low specificity, split it.
+
+     This section is how a later reader knows which failure modes were probed.
+     Without it, adding AC-010 next month tells you nothing about whether the
+     suite was ever tested nine ways or zero. -->
 
 **What was surprising.** [OUTCOME_SURPRISES]
 <!-- The things you did not predict. This is the section most likely to end up

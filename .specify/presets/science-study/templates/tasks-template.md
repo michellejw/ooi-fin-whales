@@ -68,10 +68,10 @@ write down what it is blocked on instead of working around it.
       pass or fail
 - [ ] T007 [S001] Confirm a clean rerun reproduces the output
 - [ ] T008 [S001] Account for every row lost at a join or filter
-- [ ] T009 [S001] Mutation pass. For each invariant and external check, break
-      the implementation in ONE small realistic way that violates it, confirm
-      the test meant to catch it goes red, restore, and verify the tree is
-      clean. Record the break and the result.
+- [ ] T009 [S001] Mutation pass. Run the mutation NAMED IN THE SPEC for each
+      invariant and external check: apply the break, confirm the expected test
+      goes red, restore, verify the tree is clean. Record the result in the
+      spec's Outcome under "Mutation pass".
 
 <!-- A stage is not done until its mutation pass is recorded. A passing test
      tells you two things agree. It does not tell you the test would have
