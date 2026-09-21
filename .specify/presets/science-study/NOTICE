@@ -1,0 +1,9 @@
+speckit-preset-science-study
+Copyright 2026 Waveform Analytics LLC
+
+This product includes software developed at Waveform Analytics LLC
+(https://www.waveformanalytics.com).
+
+A spec-kit preset for scientific analysis studies: stages instead of features,
+acceptance checks instead of acceptance criteria, and a written outcome for
+results that fail backward.

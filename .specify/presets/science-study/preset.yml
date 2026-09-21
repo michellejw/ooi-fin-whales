@@ -23,8 +23,9 @@ preset:
   version: "0.1.0"
   description: "Spec-driven development adapted for a scientific analysis study: stages instead of features, acceptance checks instead of acceptance criteria, and a written outcome for results that fail backward."
   author: "Waveform Analytics"
-  # repository and license are optional and display-only. Left out until the
-  # repo is actually published and the license is chosen.
+  # repository and license are optional and display-only in the validator.
+  repository: "https://github.com/Waveform-Analytics/speckit-preset-science-study"
+  license: "Apache-2.0"
 
 requires:
   # Parsed as a packaging.SpecifierSet. Presets are a 1.0 feature, so this is the

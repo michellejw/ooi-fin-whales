@@ -99,3 +99,13 @@ well on a poster does not tell anyone what to do.
 
 Early. Built against spec-kit 1.0.5, exercised on marine acoustics studies
 first. Presets themselves are a young part of spec-kit, so expect some churn.
+
+## License
+
+Apache-2.0. See `LICENSE` and `NOTICE`.
+
+Permissive, so the preset can be used and adapted freely, including inside
+commercial deliverables. The patent grant and the `NOTICE` file are why
+Apache-2.0 rather than MIT: the pattern this preset encodes is used on paid
+engagements, and attribution should survive being vendored into someone else's
+repository.
