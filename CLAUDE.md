@@ -24,6 +24,15 @@ is not a rationale.
 - `notes/literature/detector-landscape.md` the detector survey behind choosing
   Whale-VAD
 
+## Status board
+
+https://claude.ai/code/artifact/8aa1cf5a-5874-4854-ab81-0d8410403e38
+
+Current state, open issues, and what is waiting on Michelle. Source is
+`~/.claude-sync/status/ooi-fin-whales-dashboard.html`; edit it and republish to
+the same url. Only the session talking to Michelle writes it, never a subagent.
+Refresh it whenever work lands.
+
 ## Things that will waste your time if rediscovered
 
 - The metric is **IPI** (inter-pulse interval), not INI. The paper reserves
