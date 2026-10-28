@@ -1,0 +1,8 @@
+station,sensor,depth_m,sample_rate_hz,frequency_hz,ipi_s,n_notes
+AX,hydrophone,1550,100,18.45,28.75,36384
+KEMF,seismometer,2205,100,19.15,28.25,15268
+J63A,seismometer,2880,50,18.35,28.75,48855
+J23A,seismometer,2660,50,18.45,29.25,40412
+J06A,seismometer,3220,50,18.35,33.25,151338
+G30A,seismometer,3120,50,18.15,32.75,77505
+G03A,seismometer,4110,50,18.45,33.75,43566
